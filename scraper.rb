@@ -10,9 +10,11 @@ agent = Mechanize.new
 page = agent.get("http://www.edinburgh.gov.uk/councillors/name")
 
 # Find something on the page using css selectors
-people = page.search('//li/div/h3/a/node()').map(&:text)
+people = page.search('div[@class="info"]')
 
 # Write out to the sqlite database using scraperwiki library
-people.each do |person|
-  ScraperWiki.save_sqlite(["name"], {"name" => person})
+people.each do |x|
+  link = x.search('h3/a/@href').text
+  name = x.search('h3/a').text
+  ScraperWiki.save_sqlite(["name","link"], {"name" => name, "link" => link})
 end
