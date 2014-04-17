@@ -16,5 +16,7 @@ people = page.search('div[@class="info"]')
 people.each do |x|
   link = x.search('h3/a/@href').text
   name = x.search('h3/a').text
-  ScraperWiki.save_sqlite(["name","link"], {"name" => name, "link" => link})
+  ward = x.search("p[first()]/text()").to_s.strip
+  party = x.search("p[last()]/text()").to_s.strip
+  ScraperWiki.save_sqlite(["name","link"], {"name" => name, "link" => link, "ward" => ward, "party" => party})
 end
